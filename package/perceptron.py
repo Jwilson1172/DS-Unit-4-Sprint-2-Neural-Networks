@@ -26,7 +26,7 @@ class Perceptron:
             # Cac error
             error = y - activated
             # Update the Weights
-            adjustments = error * self.__sigmoid_derivative(ws)
+            adjustments = error.T * self.__sigmoid_derivative(ws)
             weights += np.dot(X.T, adjustments)
 
             print(f"Epoch - {i} ******* error - {error}%\n")
@@ -37,6 +37,33 @@ class Perceptron:
     def setWeights(self, weights):
         self.weights = weights
 
+    def setBias(self, x):
+        """Sets the learning rate for the model to use while training
+        Arguments:
+        ------------
+        x { } : Array like object or float
+        """
+        print("setting bias:")
+        print("\told bias", self.bias)
+        self.bias = x
+        print("new bias", self.bias)
+        return
+
     def predict(self, X):
         """Return class label after unit step"""
         return self.__sigmoid(np.dot(X, self.weights))
+
+
+if __name__ == '__main__':
+    import pandas as pd
+    data = {'x1': [0, 1, 0, 1],
+            'x2': [0, 0, 1, 1],
+            'y':  [1, 1, 1, 0]}
+
+    df = pd.DataFrame.from_dict(data).astype('int')
+    import numpy as np
+    p = Perceptron(100)
+    inputs = df.drop('y', axis=1)
+    weights = np.random.random((2,))
+    bias = np.ones((2,))
+    print(bias, weights)
